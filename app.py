@@ -328,13 +328,14 @@ with st.sidebar:
         label_visibility="collapsed"
     )
 
-    os.makedirs("uploads", exist_ok=True)
-    save_path = os.path.join(
-        "uploads",
-        f"uploaded_{uploaded.name}"
-    )
-    with open(save_path, "wb") as f:
-        f.write(uploaded.getbuffer())
+    if uploaded is not None:
+        save_path = os.path.join("uploads", f"uploaded_{uploaded.name}")
+
+
+        os.makedirs("uploads", exist_ok=True)
+        
+        with open(save_path, "wb") as f:
+            f.write(uploaded.getbuffer())
         
 
         ext   = os.path.splitext(uploaded.name)[1].lower().strip(".")
