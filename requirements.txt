@@ -1,17 +1,17 @@
-streamlit
-langchain
-langchain-community
-langchain-core
-langchain-groq
-langchain-huggingface
-langchain-chroma
+streamlit==1.36.0
 
-chromadb==0.4.24
+langchain==0.2.14
+langchain-community==0.2.12
+langchain-core==0.2.36
+langchain-groq==0.1.9
+langchain-huggingface==0.0.3
+langchain-chroma==0.1.2
+
+chromadb==0.5.3
 protobuf==4.25.3
 
 pandas
 python-dotenv
-
 pypdf
 docx2txt
 openpyxl
@@ -19,5 +19,3 @@ beautifulsoup4
 
 sentence-transformers
 huggingface-hub
-
-tiktoken
