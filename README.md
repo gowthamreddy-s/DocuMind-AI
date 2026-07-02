@@ -13,7 +13,7 @@ Every answer is generated **strictly from the uploaded document content** with p
 ## 🚀 Live Demo
 
 **Streamlit App:**  
-*Coming soon — deployment in progress*
+https://legalmind-ai-app.streamlit.app
 
 ---
 
