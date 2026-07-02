@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LegalMind AI — Project Report</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:    #0f1e3c;
+    --blue:    #1d4ed8;
+    --blue-lt: #3b82f6;
+    --gold:    #c9a84c;
+    --gold-lt: #f0d080;
+    --cream:   #f8f6f0;
+    --white:   #ffffff;
+    --gray-1:  #1e293b;
+    --gray-2:  #334155;
+    --gray-3:  #64748b;
+    --gray-4:  #94a3b8;
+    --gray-5:  #e2e8f0;
+    --gray-6:  #f1f5f9;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--gray-1);
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(15,30,60,0.97);
+    backdrop-filter: blur(12px);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem; color: var(--white);
+  }
+  .nav-brand span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    color: var(--gray-4); text-decoration: none;
+    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(29,78,216,0.25) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(201,168,76,0.1) 0%, transparent 60%);
+  }
+  .hero-inner { position: relative; max-width: 760px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 0.78rem; font-weight: 600;
+    color: var(--gold-lt); letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 2rem;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-sub {
+    font-size: 1.1rem; color: rgba(255,255,255,0.6);
+    max-width: 520px; margin: 0 auto 2.5rem;
+    font-weight: 300;
+  }
+  .hero-meta {
+    display: flex; justify-content: center; gap: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .hero-meta-item {
+    text-align: center;
+  }
+  .hero-meta-item .val {
+    font-size: 1.8rem; font-weight: 700; color: var(--white);
+    font-family: 'DM Serif Display', serif;
+  }
+  .hero-meta-item .lbl {
+    font-size: 0.75rem; color: var(--gray-4);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .divider-gold {
+    width: 48px; height: 2px;
+    background: var(--gold);
+    margin: 2rem auto;
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 1000px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.75rem; font-weight: 600;
+    color: var(--blue-lt); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    color: var(--navy); margin-bottom: 1rem;
+  }
+  .section-sub {
+    font-size: 1rem; color: var(--gray-3);
+    max-width: 560px; margin-bottom: 3rem;
+  }
+
+  /* ── PROBLEM ── */
+  .problem-section { background: var(--white); }
+  .problem-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2rem; margin-top: 2.5rem;
+  }
+  .problem-card {
+    background: var(--gray-6);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 10px 10px 0;
+    padding: 1.5rem;
+  }
+  .problem-card.gold { border-color: var(--gold); }
+  .problem-card h3 {
+    font-size: 0.85rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--gray-3); margin-bottom: 0.6rem;
+  }
+  .problem-card p { font-size: 0.95rem; color: var(--gray-2); }
+
+  /* ── FEATURES ── */
+  .features-section { background: var(--cream); }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .feature-card {
+    background: var(--white);
+    border: 1px solid var(--gray-5);
+    border-radius: 12px;
+    padding: 1.8rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .feature-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(15,30,60,0.08);
+  }
+  .feature-icon {
+    font-size: 1.8rem; margin-bottom: 1rem;
+  }
+  .feature-card h3 {
+    font-size: 1rem; font-weight: 600;
+    color: var(--navy); margin-bottom: 0.5rem;
+  }
+  .feature-card p {
+    font-size: 0.88rem; color: var(--gray-3); line-height: 1.6;
+  }
+
+  /* ── TECH STACK ── */
+  .tech-section { background: var(--navy); }
+  .tech-section .section-title { color: var(--white); }
+  .tech-section .section-label { color: var(--gold); }
+  .tech-section .section-sub { color: rgba(255,255,255,0.5); }
+
+  .stack-table {
+    width: 100%; border-collapse: collapse; margin-top: 1rem;
+  }
+  .stack-table th {
+    text-align: left; padding: 0.8rem 1rem;
+    font-size: 0.75rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--gold); border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .stack-table td {
+    padding: 0.9rem 1rem;
+    font-size: 0.9rem; color: rgba(255,255,255,0.75);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    vertical-align: top;
+  }
+  .stack-table tr:last-child td { border-bottom: none; }
+  .stack-table td:first-child {
+    font-weight: 600; color: rgba(255,255,255,0.5);
+    font-size: 0.78rem; text-transform: uppercase;
+    letter-spacing: 0.06em; width: 130px;
+  }
+  .tag {
+    display: inline-block;
+    padding: 2px 10px; border-radius: 100px;
+    font-size: 0.75rem; font-weight: 600;
+    margin: 2px;
+  }
+  .tag-blue { background: rgba(59,130,246,0.2); color: #93c5fd; }
+  .tag-gold { background: rgba(201,168,76,0.2); color: var(--gold-lt); }
+  .tag-green { background: rgba(34,197,94,0.15); color: #86efac; }
+  .tag-red { background: rgba(239,68,68,0.15); color: #fca5a5; }
+
+  /* ── RAG PIPELINE ── */
+  .pipeline-section { background: var(--white); }
+  .pipeline {
+    display: flex; align-items: flex-start;
+    gap: 0; margin-top: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .pipeline-step {
+    flex: 1; min-width: 140px;
+    text-align: center; position: relative;
+    padding: 0 1rem;
+  }
+  .pipeline-step:not(:last-child)::after {
+    content: '→';
+    position: absolute; right: -8px; top: 20px;
+    color: var(--blue-lt); font-size: 1.2rem;
+  }
+  .step-circle {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--blue); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem;
+    margin: 0 auto 0.8rem;
+  }
+  .pipeline-step h4 {
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--navy); margin-bottom: 0.3rem;
+  }
+  .pipeline-step p {
+    font-size: 0.75rem; color: var(--gray-3);
+  }
+
+  /* ── ARCHITECTURE ── */
+  .arch-section { background: var(--gray-6); }
+  .arch-box {
+    background: var(--white);
+    border: 1px solid var(--gray-5);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 1.5rem;
+  }
+  .arch-layer {
+    font-size: 0.7rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--white); background: var(--blue);
+    padding: 4px 10px; border-radius: 4px;
+    white-space: nowrap; min-width: 90px; text-align: center;
+  }
+  .arch-layer.gold { background: var(--gold); color: var(--navy); }
+  .arch-layer.navy { background: var(--navy); }
+  .arch-layer.green { background: #16a34a; }
+  .arch-content {
+    font-size: 0.88rem; color: var(--gray-2);
+  }
+  .arch-content strong { color: var(--navy); }
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem; color: var(--blue);
+    background: var(--gray-6); padding: 1px 6px; border-radius: 4px;
+  }
+
+  /* ── PRODUCTION ROADMAP ── */
+  .roadmap-section { background: var(--cream); }
+  .roadmap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem; margin-top: 2rem;
+  }
+  .roadmap-card {
+    background: var(--white);
+    border: 1px solid var(--gray-5);
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: relative; overflow: hidden;
+  }
+  .roadmap-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .roadmap-card.now::before { background: var(--blue); }
+  .roadmap-card.soon::before { background: var(--gold); }
+  .roadmap-card.later::before { background: #16a34a; }
+  .roadmap-card.future::before { background: #9333ea; }
+  .roadmap-phase {
+    font-size: 0.72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+  .now .roadmap-phase { color: var(--blue); }
+  .soon .roadmap-phase { color: var(--gold); }
+  .later .roadmap-phase { color: #16a34a; }
+  .future .roadmap-phase { color: #9333ea; }
+  .roadmap-card h3 {
+    font-size: 1rem; font-weight: 600;
+    color: var(--navy); margin-bottom: 0.8rem;
+  }
+  .roadmap-card ul {
+    list-style: none; padding: 0;
+  }
+  .roadmap-card ul li {
+    font-size: 0.83rem; color: var(--gray-3);
+    padding: 3px 0; display: flex; gap: 6px;
+  }
+  .roadmap-card ul li::before { content: '→'; color: var(--gray-4); }
+
+  /* ── REVENUE ── */
+  .revenue-section { background: var(--white); }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem; margin-top: 2rem;
+  }
+  .pricing-card {
+    border: 1px solid var(--gray-5);
+    border-radius: 14px; padding: 2rem;
+    text-align: center;
+  }
+  .pricing-card.featured {
+    border-color: var(--blue);
+    background: linear-gradient(135deg, #eff6ff, #f0f9ff);
+  }
+  .pricing-card h3 {
+    font-size: 0.85rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--gray-3); margin-bottom: 0.8rem;
+  }
+  .pricing-amount {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.4rem; color: var(--navy);
+    margin-bottom: 0.3rem;
+  }
+  .pricing-period {
+    font-size: 0.8rem; color: var(--gray-4); margin-bottom: 1.2rem;
+  }
+  .pricing-features {
+    list-style: none; text-align: left;
+    font-size: 0.85rem; color: var(--gray-2);
+  }
+  .pricing-features li {
+    padding: 5px 0; border-bottom: 1px solid var(--gray-5);
+    display: flex; gap: 8px; align-items: center;
+  }
+  .pricing-features li:last-child { border-bottom: none; }
+  .pricing-features li::before { content: '✓'; color: var(--blue); font-weight: 700; }
+
+  /* ── ABOUT ── */
+  .about-section {
+    background: var(--navy);
+    text-align: center;
+  }
+  .about-section .section-title { color: var(--white); }
+  .about-section .section-label { color: var(--gold); }
+  .about-avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; margin: 0 auto 1.5rem;
+    font-family: 'DM Serif Display', serif;
+    color: white; font-weight: 700;
+  }
+  .about-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem; color: var(--white); margin-bottom: 0.3rem;
+  }
+  .about-role {
+    font-size: 0.9rem; color: var(--gold); margin-bottom: 1.5rem;
+  }
+  .about-desc {
+    font-size: 0.95rem; color: rgba(255,255,255,0.6);
+    max-width: 500px; margin: 0 auto 2rem; line-height: 1.8;
+  }
+  .skill-chips {
+    display: flex; flex-wrap: wrap;
+    justify-content: center; gap: 8px;
+    max-width: 500px; margin: 0 auto;
+  }
+  .chip {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 0.78rem; color: rgba(255,255,255,0.7);
+  }
+
+  /* ── STATUS ── */
+  .status-section { background: var(--cream); }
+  .status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem; margin-top: 2rem;
+  }
+  .status-item {
+    background: var(--white);
+    border: 1px solid var(--gray-5);
+    border-radius: 10px; padding: 1rem 1.2rem;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .status-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #22c55e; flex-shrink: 0;
+  }
+  .status-item span {
+    font-size: 0.88rem; color: var(--gray-2); font-weight: 500;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    text-align: center; padding: 2rem;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.8rem;
+    border-top: 1px solid rgba(201,168,76,0.15);
+  }
+  footer strong { color: var(--gold); }
+
+  @media (max-width: 640px) {
+    .problem-grid { grid-template-columns: 1fr; }
+    .pipeline { flex-direction: column; }
+    .pipeline-step:not(:last-child)::after { content: '↓'; right: auto; top: auto; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">⚖️ Legal<span>Mind</span> AI</div>
+  <div class="nav-links">
+    <a href="#problem">Problem</a>
+    <a href="#features">Features</a>
+    <a href="#tech">Stack</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#about">About</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">⚖️ Legal Tech · RAG · AI</div>
+    <h1>Legal documents,<br><em>answered instantly.</em></h1>
+    <p class="hero-sub">
+      LegalMind AI lets advocates chat with their legal documents,
+      auto-generate FAQs, and compare multiple documents —
+      with strict RAG, zero hallucination.
+    </p>
+    <div class="divider-gold"></div>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="val">100%</div>
+        <div class="lbl">Strict RAG</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="val">0</div>
+        <div class="lbl">Hallucination</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="val">6</div>
+        <div class="lbl">File Types</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="val">∞</div>
+        <div class="lbl">Documents</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem-section" id="problem">
+  <div class="container">
+    <div class="section-label">The Problem</div>
+    <h2 class="section-title">Lawyers waste hours in documents</h2>
+    <p class="section-sub">
+      A lawyer handling 20 cases reads through thousands of pages daily
+      to find one clause, one date, one party name.
+    </p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <h3>Before LegalMind AI</h3>
+        <p>Manually reading 100+ page contracts. Searching keyword by keyword.
+        Missing critical clauses under time pressure. No way to compare
+        two agreements quickly.</p>
+      </div>
+      <div class="problem-card gold">
+        <h3>After LegalMind AI</h3>
+        <p>Ask a question, get a cited answer in seconds. Auto-generated FAQs
+        from every document. Side-by-side comparison of multiple documents
+        with structured analysis.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="section-label">Core Features</div>
+    <h2 class="section-title">Everything a lawyer needs</h2>
+    <p class="section-sub">
+      Built specifically for Indian legal workflows — not a generic chatbot.
+    </p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3>Chat with Documents</h3>
+        <p>Ask anything about any uploaded document. Get precise answers with
+        page citations. Answers come strictly from the document — never from
+        external knowledge.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">❓</div>
+        <h3>Auto FAQ Generation</h3>
+        <p>Upload a document and get 6 intelligent FAQs generated automatically.
+        Adapts to document type — contract, policy, report, or legal notice.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Multi-Document Compare</h3>
+        <p>Select 2–5 documents and compare them. Get structured analysis with
+        Executive Summary, Similarities, Differences, Key Findings, and
+        Conclusion.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📂</div>
+        <h3>Private Document Library</h3>
+        <p>Each lawyer's documents are completely isolated. Persistent storage
+        across sessions. Upload once, access forever until you delete.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Secure Login</h3>
+        <p>Supabase Auth with email/password. Each advocate sees only their own
+        documents. Row-level security ensures complete data privacy.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Confidence Scoring</h3>
+        <p>Every answer shows a retrieval confidence score. Source chunks shown
+        with page references. Full transparency on how answers were generated.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section class="tech-section" id="tech">
+  <div class="container">
+    <div class="section-label">Tech Stack</div>
+    <h2 class="section-title">MVP → Production</h2>
+    <p class="section-sub">
+      Built lean for MVP. Every component has a production-grade replacement
+      when the time comes.
+    </p>
+    <table class="stack-table">
+      <thead>
+        <tr>
+          <th>Layer</th>
+          <th>MVP (Now — Free)</th>
+          <th>Production (Later)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>UI</td>
+          <td><span class="tag tag-blue">Streamlit</span></td>
+          <td><span class="tag tag-gold">React + Next.js</span></td>
+        </tr>
+        <tr>
+          <td>Backend</td>
+          <td><span class="tag tag-blue">Streamlit built-in</span></td>
+          <td><span class="tag tag-gold">FastAPI</span></td>
+        </tr>
+        <tr>
+          <td>LLM</td>
+          <td><span class="tag tag-blue">Groq — Llama 3.1 70B</span></td>
+          <td><span class="tag tag-gold">OpenAI GPT-4o / Claude 3.5</span></td>
+        </tr>
+        <tr>
+          <td>Embeddings</td>
+          <td><span class="tag tag-blue">HuggingFace BGE (local)</span></td>
+          <td><span class="tag tag-gold">OpenAI text-embedding-3</span></td>
+        </tr>
+        <tr>
+          <td>Vector DB</td>
+          <td><span class="tag tag-blue">ChromaDB (local)</span></td>
+          <td><span class="tag tag-gold">Qdrant Cloud / Pinecone</span></td>
+        </tr>
+        <tr>
+          <td>Database</td>
+          <td><span class="tag tag-blue">JSON file</span></td>
+          <td><span class="tag tag-gold">PostgreSQL (Supabase)</span></td>
+        </tr>
+        <tr>
+          <td>Auth</td>
+          <td><span class="tag tag-green">Supabase Auth ✓</span></td>
+          <td><span class="tag tag-green">Supabase Pro</span></td>
+        </tr>
+        <tr>
+          <td>File Storage</td>
+          <td><span class="tag tag-blue">Local disk</span></td>
+          <td><span class="tag tag-gold">AWS S3 / Cloudflare R2</span></td>
+        </tr>
+        <tr>
+          <td>Hosting</td>
+          <td><span class="tag tag-green">Streamlit Cloud ✓</span></td>
+          <td><span class="tag tag-gold">Railway / AWS</span></td>
+        </tr>
+        <tr>
+          <td>Payments</td>
+          <td><span class="tag tag-blue">None</span></td>
+          <td><span class="tag tag-gold">Razorpay</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- RAG PIPELINE -->
+<section class="pipeline-section" id="pipeline">
+  <div class="container">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">The RAG Pipeline</h2>
+    <p class="section-sub">
+      Strict Retrieval-Augmented Generation — answers come only from
+      your documents, never from external knowledge.
+    </p>
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <div class="step-circle">1</div>
+        <h4>Upload</h4>
+        <p>PDF / DOCX / CSV / Excel / Image</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-circle">2</div>
+        <h4>Extract</h4>
+        <p>Text extracted from all file types</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-circle">3</div>
+        <h4>Chunk</h4>
+        <p>Split into 1000-token overlapping chunks</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-circle">4</div>
+        <h4>Embed</h4>
+        <p>BGE embeddings stored in ChromaDB</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-circle">5</div>
+        <h4>Retrieve</h4>
+        <p>Top-8 chunks by semantic similarity</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-circle">6</div>
+        <h4>Answer</h4>
+        <p>Llama 3.1 70B with strict RAG prompt</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="arch-section">
+  <div class="container">
+    <div class="section-label">System Architecture</div>
+    <h2 class="section-title">How it all fits together</h2>
+    <br>
+    <div class="arch-box">
+      <div class="arch-layer">Client</div>
+      <div class="arch-content">
+        <strong>Streamlit UI</strong> — Upload · Chat · FAQ · Compare · Document Library
+      </div>
+    </div>
+    <div class="arch-box">
+      <div class="arch-layer gold">Auth</div>
+      <div class="arch-content">
+        <strong>Supabase Auth</strong> — Email login · Per-user isolation ·
+        Row Level Security · Session management
+      </div>
+    </div>
+    <div class="arch-box">
+      <div class="arch-layer">RAG</div>
+      <div class="arch-content">
+        <strong>LangChain Pipeline</strong> — Document loaders ·
+        <span class="mono">RecursiveCharacterTextSplitter</span> ·
+        BGE Embeddings · ChromaDB · Groq LLM
+      </div>
+    </div>
+    <div class="arch-box">
+      <div class="arch-layer navy">Storage</div>
+      <div class="arch-content">
+        <strong>Local Storage</strong> — ChromaDB vector store ·
+        Per-user JSON library · Uploaded files folder
+      </div>
+    </div>
+    <div class="arch-box">
+      <div class="arch-layer green">LLM</div>
+      <div class="arch-content">
+        <strong>Groq API</strong> — <span class="mono">llama-3.1-70b-versatile</span> ·
+        Strict RAG prompt · No hallucination · Source citations required
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATUS -->
+<section class="status-section">
+  <div class="container">
+    <div class="section-label">Current Status</div>
+    <h2 class="section-title">What's working today</h2>
+    <div class="status-grid">
+      <div class="status-item"><div class="status-dot"></div><span>Document upload — PDF, DOCX, CSV, Excel, Images</span></div>
+      <div class="status-item"><div class="status-dot"></div><span>Multi-document persistent library</span></div>
+      <div class="status-item"><div class="status-dot"></div><span>Chat with strict RAG — no hallucination</span></div>
+      <div class="status-item"><div class="status-dot"></div><span>Page citations on every answer</span></div>
+      <div class="status-item"><div class="status-dot"></div><span>Auto FAQ generation (6 per document)</span></div>
+      <div class="status-item"><div class="status-dot"></div><span>FAQ regeneration option</span></div>
+      <div class="status-item"><div class="status-dot"></div><span>Multi-document comparison (up to 5)</span></div>
+      <div class="status-item"><div class="status-dot"></div><span>Structured compare — 7 section output</span></div>
+      <div class="status-item"><div class="status-dot"></div><span>Per-user Supabase Auth</span></div>
+      <div class="status-item"><div class="status-dot"></div><span>Chat history per document</span></div>
+      <div class="status-item"><div class="status-dot"></div><span>Permanent document delete</span></div>
+      <div class="status-item"><div class="status-dot"></div><span>Confidence scoring on answers</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="roadmap-section" id="roadmap">
+  <div class="container">
+    <div class="section-label">Production Roadmap</div>
+    <h2 class="section-title">From MVP to SaaS</h2>
+    <div class="roadmap">
+      <div class="roadmap-card now">
+        <div class="roadmap-phase">Now — MVP</div>
+        <h3>Pilot Ready</h3>
+        <ul>
+          <li>Streamlit + Groq</li>
+          <li>ChromaDB local</li>
+          <li>Supabase Auth</li>
+          <li>Deployed on Streamlit Cloud</li>
+          <li>2–3 pilot law firms</li>
+        </ul>
+      </div>
+      <div class="roadmap-card soon">
+        <div class="roadmap-phase">Month 1–2</div>
+        <h3>Feedback Loop</h3>
+        <ul>
+          <li>Lawyer feedback collection</li>
+          <li>PDF download of chat</li>
+          <li>OpenAI GPT-4o swap</li>
+          <li>Better chunking strategy</li>
+          <li>10 paying users target</li>
+        </ul>
+      </div>
+      <div class="roadmap-card later">
+        <div class="roadmap-phase">Month 3–6</div>
+        <h3>Production Grade</h3>
+        <ul>
+          <li>FastAPI + Next.js rebuild</li>
+          <li>Qdrant Cloud vector DB</li>
+          <li>AWS S3 file storage</li>
+          <li>Razorpay payments</li>
+          <li>PostgreSQL database</li>
+        </ul>
+      </div>
+      <div class="roadmap-card future">
+        <div class="roadmap-phase">Month 6+</div>
+        <h3>Scale</h3>
+        <ul>
+          <li>Mobile app</li>
+          <li>Bar association partnerships</li>
+          <li>Indian legal corpus fine-tune</li>
+          <li>Multi-language support</li>
+          <li>Enterprise white-label</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVENUE -->
+<section class="revenue-section">
+  <div class="container">
+    <div class="section-label">Revenue Model</div>
+    <h2 class="section-title">Pricing for Indian law firms</h2>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <h3>Advocate Basic</h3>
+        <div class="pricing-amount">₹999</div>
+        <div class="pricing-period">per month · 1 user</div>
+        <ul class="pricing-features">
+          <li>10 documents</li>
+          <li>Chat + FAQ</li>
+          <li>Basic comparison</li>
+          <li>Email support</li>
+        </ul>
+      </div>
+      <div class="pricing-card featured">
+        <h3>Firm Plan</h3>
+        <div class="pricing-amount">₹2,999</div>
+        <div class="pricing-period">per month · up to 5 users</div>
+        <ul class="pricing-features">
+          <li>Unlimited documents</li>
+          <li>All features</li>
+          <li>Multi-doc comparison</li>
+          <li>Priority support</li>
+        </ul>
+      </div>
+      <div class="pricing-card">
+        <h3>Enterprise</h3>
+        <div class="pricing-amount">₹9,999</div>
+        <div class="pricing-period">per month · unlimited users</div>
+        <ul class="pricing-features">
+          <li>Unlimited everything</li>
+          <li>Custom branding</li>
+          <li>Dedicated support</li>
+          <li>On-premise option</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="container">
+    <div class="section-label">Builder</div>
+    <div class="about-avatar">G</div>
+    <div class="about-name">Gowtham Reddy S</div>
+    <div class="about-role">AI Engineer · Generative AI Developer · Legal Tech</div>
+    <p class="about-desc">
+      Building LegalMind AI — a RAG-based legal document intelligence
+      platform for Indian advocates and law firms. Focused on making
+      AI practical, accurate, and trustworthy for legal professionals.
+    </p>
+    <div class="skill-chips">
+      <span class="chip">Python</span>
+      <span class="chip">LangChain</span>
+      <span class="chip">RAG Systems</span>
+      <span class="chip">Groq API</span>
+      <span class="chip">ChromaDB</span>
+      <span class="chip">Supabase</span>
+      <span class="chip">Streamlit</span>
+      <span class="chip">RAG Systems</span>
+      <span class="chip">Legal Tech</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>⚖️ <strong>LegalMind AI</strong> · Built by Gowtham Reddy S · 2026</p>
+  <p style="margin-top:6px">RAG · LangChain · Groq · ChromaDB · Supabase · Streamlit</p>
+</footer>
+
+</body>
+</html>

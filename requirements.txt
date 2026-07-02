@@ -19,3 +19,4 @@ beautifulsoup4
 
 sentence-transformers
 huggingface-hub
+groq>=0.11.0
